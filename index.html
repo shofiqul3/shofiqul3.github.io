@@ -1,132 +1,427 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MD Shofiqul Islam - Portfolio</title>
-    <link rel="stylesheet" href="https://shofiqul3.github.io/file_system/main_profile/css_file/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abid — MD Shofiqul Islam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0B0D0C;
+    --bg-alt:#111412;
+    --text:#EDEFEC;
+    --muted:#8A9089;
+    --accent:#B9FF3B;
+    --line:rgba(237,239,236,0.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk',sans-serif;
+  }
+  body.loading{overflow:hidden;}
+
+  /* Preloader intro */
+  .preloader{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  .preloader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .preloader-name{
+    display:flex;font-size:clamp(3rem,11vw,7.5rem);font-weight:700;
+    letter-spacing:0.04em;perspective:600px;
+  }
+  .preloader-name span{
+    display:inline-block;color:var(--accent);
+    opacity:0;transform-origin:top center;
+    transform:rotateX(-90deg) translateY(-10px);
+    animation:letterFlip .55s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  .preloader-name span:nth-child(1){animation-delay:0.05s;}
+  .preloader-name span:nth-child(2){animation-delay:0.15s;}
+  .preloader-name span:nth-child(3){animation-delay:0.25s;}
+  .preloader-name span:nth-child(4){animation-delay:0.35s;}
+  .preloader-name.exit{
+    animation:slideUpOut .55s cubic-bezier(.5,0,.75,0) forwards;
+  }
+  .preloader-underline{
+    width:0;height:2px;background:var(--accent);
+    animation:drawLine .4s ease forwards;
+    animation-delay:0.9s;
+  }
+  .preloader.exiting .preloader-underline{
+    animation:retractLine .35s ease forwards;
+  }
+  @keyframes letterFlip{
+    to{opacity:1;transform:rotateX(0deg) translateY(0);}
+  }
+  @keyframes slideUpOut{
+    to{opacity:0;transform:translateY(-60px);}
+  }
+  @keyframes drawLine{ to{width:80px;} }
+  @keyframes retractLine{ to{width:0;} }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .container{max-width:980px;margin:0 auto;padding:0 28px;}
+  a{color:inherit;}
+
+  /* Fixed top-right cluster: avatar + nav pill */
+  .top-right-cluster{
+    position:fixed;top:18px;right:18px;z-index:100;
+    display:flex;align-items:center;gap:10px;
+    transition:transform .4s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+  }
+  .top-right-cluster.nav-hidden{
+    transform:translateY(-90px);
+    opacity:0;
+  }
+  nav#navPill{
+    background:rgba(17,20,18,0.85);
+    backdrop-filter:blur(10px);
+    border:1px solid var(--line);
+    border-radius:40px;
+    padding:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+
+  /* 3-dot menu button */
+  .menu-btn{
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    gap:4px;background:none;border:none;cursor:pointer;padding:10px;
+  }
+  .menu-btn span{
+    width:4px;height:4px;border-radius:50%;background:var(--text);
+    transition:transform .35s ease, opacity .3s ease, width .35s ease, border-radius .35s ease, background .35s ease;
+  }
+  .menu-btn:hover span{background:var(--accent);}
+  .menu-btn.active span{background:var(--accent);}
+  .menu-btn.active span:nth-child(1){width:18px;border-radius:2px;transform:translateY(8px) rotate(45deg);}
+  .menu-btn.active span:nth-child(2){opacity:0;transform:scale(0);}
+  .menu-btn.active span:nth-child(3){width:18px;border-radius:2px;transform:translateY(-8px) rotate(-45deg);}
+
+  /* Mobile slide menu */
+  .mobile-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);
+    z-index:150;opacity:0;transition:opacity .3s ease;
+  }
+  .mobile-overlay.active{display:block;opacity:1;}
+  .mobile-menu{
+    position:fixed;top:0;right:-260px;width:240px;height:100%;
+    background:var(--bg-alt);border-left:1px solid var(--line);
+    z-index:200;padding:90px 26px;list-style:none;
+    transition:right .4s cubic-bezier(.22,1,.36,1);
+  }
+  .mobile-menu.active{right:0;}
+  .mobile-menu li{
+    margin-bottom:22px;
+    opacity:0;transform:translateX(24px);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .mobile-menu.active li{opacity:1;transform:translateX(0);}
+  .mobile-menu.active li:nth-child(1){transition-delay:.08s;}
+  .mobile-menu.active li:nth-child(2){transition-delay:.14s;}
+  .mobile-menu.active li:nth-child(3){transition-delay:.20s;}
+  .mobile-menu.active li:nth-child(4){transition-delay:.26s;}
+  .mobile-menu.active li:nth-child(5){transition-delay:.32s;}
+  .mobile-menu a{
+    text-decoration:none;color:var(--text);font-family:'JetBrains Mono',monospace;
+    font-size:0.95rem;display:flex;align-items:center;gap:10px;
+  }
+  .mobile-menu a:hover{color:var(--accent);}
+  .mobile-menu a i{color:var(--accent);width:16px;}
+
+  section{padding:110px 0;border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;
+    color:var(--accent);letter-spacing:0.08em;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--accent);}
+
+  /* Hero — redesigned as two-column with large monogram */
+  .hero{padding-top:150px;border-bottom:1px solid var(--line);}
+  .hero-grid{
+    display:grid;grid-template-columns:1.3fr 0.7fr;gap:50px;align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem,6.5vw,4.6rem);
+    font-weight:700;line-height:1.02;letter-spacing:-0.02em;
+    text-transform:uppercase;
+    margin-bottom:26px;
+  }
+  .hero h1 span{color:var(--accent);}
+  .hero p{
+    max-width:520px;color:var(--muted);font-size:1.05rem;line-height:1.7;
+    margin-bottom:34px;
+  }
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+    padding:13px 24px;border-radius:3px;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;transition:all .2s;
+  }
+  .btn-fill{background:var(--accent);color:var(--bg);font-weight:500;}
+  .btn-fill:hover{opacity:0.85;}
+  .btn-line{border:1px solid var(--line);color:var(--text);}
+  .btn-line:hover{border-color:var(--accent);color:var(--accent);}
+
+  .hero-avatar-wrap{display:flex;justify-content:center;align-items:center;}
+  .avatar-photo-large{
+    width:min(280px,80%);aspect-ratio:1/1;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(185,255,59,0.25), transparent 60%), var(--bg-alt);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .avatar-photo-large::before{
+    content:"";position:absolute;inset:-1px;border-radius:50%;
+    border:1px dashed var(--line);
+    z-index:1;
+    pointer-events:none;
+  }
+  .avatar-photo-large img{
+    width:100%;height:100%;object-fit:cover;
+    border-radius:50%;
+  }
+
+  /* About */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  .about-grid h2{font-size:2rem;font-weight:700;margin-bottom:22px;line-height:1.2;}
+  .about-grid p{color:var(--muted);margin-bottom:16px;line-height:1.75;}
+  .about-tag{
+    font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+    color:var(--accent);border:1px solid var(--line);
+    display:inline-block;padding:10px 16px;border-radius:3px;margin-top:8px;
+  }
+
+  /* Education (styled like an experience timeline) */
+  .edu-item{
+    display:grid;grid-template-columns:160px 1fr;gap:30px;
+    padding:34px 0;border-top:1px solid var(--line);
+  }
+  .edu-item:last-child{border-bottom:none;}
+  .edu-period{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--muted);}
+  .edu-item h3{font-size:1.3rem;font-weight:600;margin-bottom:6px;}
+  .edu-item .role{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.85rem;margin-bottom:10px;display:block;}
+  .edu-item p{color:var(--muted);line-height:1.7;}
+
+  /* Skills / Stack */
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+  .stack-card{
+    border:1px solid var(--line);border-radius:6px;padding:22px 18px;
+    background:var(--bg-alt);transition:border-color .2s, transform .2s;
+  }
+  .stack-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .stack-card i{color:var(--accent);font-size:1.3rem;margin-bottom:12px;display:block;}
+  .stack-card span{font-family:'JetBrains Mono',monospace;font-size:0.85rem;}
+
+  /* Contact */
+  .contact-inner{text-align:left;}
+  .contact-inner h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;margin-bottom:20px;line-height:1.15;}
+  .contact-inner h2 span{color:var(--accent);}
+  .contact-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:28px;}
+  .contact-links a{
+    font-family:'JetBrains Mono',monospace;font-size:0.9rem;
+    border:1px solid var(--line);border-radius:4px;
+    text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;
+    transition:border-color .2s, color .2s;
+    width:200px;height:52px;
+    flex:0 0 auto;
+    box-sizing:border-box;
+  }
+  .contact-links a:hover{border-color:var(--accent);color:var(--accent);}
+
+  @media (max-width:480px){
+    .contact-links{flex-direction:column;}
+    .contact-links a{width:100%;}
+  }
+
+  footer{
+    padding:36px 0;text-align:center;
+    color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:0.82rem;
+  }
+  footer .accent{color:var(--accent);}
+
+  @media (max-width:720px){
+    .about-grid{grid-template-columns:1fr;gap:26px;}
+    .edu-item{grid-template-columns:1fr;gap:8px;}
+    .hero-grid{grid-template-columns:1fr;gap:30px;}
+    .hero-avatar-wrap{order:-1;}
+    .avatar-photo-large{width:150px;}
+  }
+</style>
 </head>
-<body>
+<body class="loading">
 
-    <!-- Header -->
-    <header id="header">
-        <nav class="navbar container">
-            <div class="logo">
-                MD <span>Shofiqul</span> Islam
-            </div>
+<div class="preloader" id="preloader">
+  <div class="preloader-name" id="preloaderName">
+    <span>A</span><span>B</span><span>I</span><span>D</span>
+  </div>
+  <div class="preloader-underline"></div>
+</div>
 
-            <!-- Desktop menu -->
-            <ul class="nav-links desktop-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#projects">Repository</a></li>
-            </ul>
+<div class="top-right-cluster" id="topRightCluster">
+  <nav id="navPill">
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</div>
 
-            <!-- 3-dot hamburger button -->
-            <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<ul class="mobile-menu" id="mobileMenu">
+  <li><a href="#home"><i class="fas fa-house"></i> Home</a></li>
+  <li><a href="#about"><i class="fas fa-user"></i> About Me</a></li>
+  <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
+  <li><a href="#skills"><i class="fas fa-layer-group"></i> Skills</a></li>
+  <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+</ul>
 
-        <!-- Mobile slide menu -->
-        <div class="mobile-overlay" id="mobileOverlay"></div>
-        <ul class="mobile-menu" id="mobileMenu">
-            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-            <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
-            <li><a href="#projects"><i class="fab fa-github"></i> Repository</a></li>
-        </ul>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-bg" id="heroBg"></div>
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <div class="profile-info">
-                <img src="images/profile.svg" alt="MD Shofiqul Islam" class="profile-pic" id="profilePic">
-                <h1>MD Shofiqul Islam</h1>
-                <p class="tagline">"Alhamdulillah for everything"</p>
-                <p class="bio">
-                    لَيسَ البِرَّ أَن تُوَلّوا وُجوهَكُم قِبَلَ المَشرِقِ وَالمَغرِبِ وَلكِنَّ البِرَّ مَن آمَنَ بِاللَّهِ وَاليَومِ الآخِرِ وَالمَلائِكَةِ وَالكِتابِ وَالنَّبِيّينَ وَآتَى المالَ عَلى حُبِّهِ ذَوِي القُربى وَاليَتامى وَالمَساكينَ وَابنَ السَّبيلِ وَالسّائِلينَ وَفِي الرِّقابِ وَأَقامَ الصَّلاةَ وَآتَى الزَّكاةَ وَالموفونَ بِعَهدِهِم إِذا عاهَدوا وَالصّابِرينَ فِي البَأساءِ وَالضَّرّاءِ وَحينَ البَأسِ أُولئِكَ الَّذينَ صَدَقوا وَأُولئِكَ هُمُ المُتَّقونَ
-                    <br>
-                    ভালো কাজ এটা নয় যে, তোমরা তোমাদের চেহারা পূর্ব ও পশ্চিম দিকে ফিরাবে; বরং ভালো কাজ হল যে ঈমান আনে আল্লাহ, শেষ দিবস, ফেরেশতাগণ, কিতাব ও নবীগণের প্রতি এবং যে সম্পদ প্রদান করে তার প্রতি আসক্তি সত্ত্বেও নিকটাত্মীয়গণকে, ইয়াতীম, অসহায়, মুসাফির ও প্রার্থনাকারীকে এবং বন্দিমুক্তিতে এবং যে সালাত কায়েম করে, যাকাত দেয় এবং যারা অঙ্গীকার করে তা পূর্ণ করে, যারা ধৈর্যধারণ করে কষ্ট ও দুর্দশায় ও যুদ্ধের সময়ে। তারাই সত্যবাদী এবং তারাই মুত্তাকী।
-                </p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">Contact Me</a>
-                    <a href="#education" class="btn btn-outline">Education</a>
-                </div>
-            </div>
+<section id="home" class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow mono">HSC STUDENT · KUSHTIA, BANGLADESH</div>
+        <h1>MD Shofiqul Islam<span>.</span></h1>
+        <p>Hi! I'm Abid — a Higher Secondary student in the Humanities group, building a steady foundation in learning, discipline, and reflection. "Alhamdulillah for everything."</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-fill">Get in touch</a>
+          <a href="#education" class="btn btn-line">View Education</a>
         </div>
-    </section>
-
-    <!-- Contact Section - Only Email -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Get In Touch</h2>
-            <p>Feel free to reach out</p>
-            <div class="contact-grid">
-                <a href="mailto:shofiqulislamabid@gmail.com?subject=Hello%20Shofiqul" class="contact-card email">
-                    <i class="fas fa-envelope"></i>
-                    <span class="contact-label">Email</span>
-                    <span class="contact-detail">shofiqulislamabid@gmail.com</span>
-                </a>
-            </div>
+      </div>
+      <div class="hero-avatar-wrap">
+        <div class="avatar-photo-large">
+          <img src="images/profile.jpg" alt="Shofiqul Islam profile picture">
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Education Section -->
-    <section id="education" class="education">
-        <div class="container">
-            <h2>Education</h2>
-            <div class="edu-grid">
-                <div class="edu-card">
-                    <div class="edu-icon"><i class="fas fa-university"></i></div>
-                    <h3>Jhaudia College</h3>
-                    <div class="edu-details">
-                        <p><i class="fas fa-map-marker-alt"></i> Kushtia, Bangladesh</p>
-                        <p><i class="fas fa-book-open"></i> Higher Secondary (HSC)</p>
-                    </div>
-                    <div class="edu-footer">
-                        <span class="badge current">2024 - Present</span>
-                    </div>
-                </div>
-                <div class="edu-card">
-                    <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <h3>Jhaudia Bazar Secondary High School</h3>
-                    <div class="edu-details">
-                        <p><i class="fas fa-map-marker-alt"></i> Kushtia, Bangladesh</p>
-                        <p><i class="fas fa-award"></i> Humanities Group</p>
-                    </div>
-                    <div class="edu-footer">
-                        <span class="badge completed">SSC 2024</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="about">
+  <div class="container about-grid">
+    <div>
+      <div class="eyebrow mono">ABOUT ME</div>
+      <h2>This is me.</h2>
+    </div>
+    <div>
+      <p>I'm Shofiqul, currently pursuing my Higher Secondary Certificate at Jhaudia College in Kushtia, Bangladesh. My focus is the Humanities — language, society, and ideas — and I try to bring the same discipline to my studies that I bring to everything else.</p>
+      <p>I believe in steady, consistent effort over shortcuts, and in staying grounded while I grow — academically and personally.</p>
+      <span class="about-tag mono">grateful for every lesson learned</span>
+    </div>
+  </div>
+</section>
 
-    <!-- GitHub Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2>Repository</h2>
-            <p>Public repositories — auto-updates</p>
-            <div class="projects-grid" id="projectsGrid">
-                <div class="loading">Loading projects...</div>
-            </div>
-        </div>
-    </section>
+<section id="education">
+  <div class="container">
+    <div class="eyebrow mono">EDUCATION</div>
+    <h2 style="font-size:2rem;font-weight:700;margin-bottom:8px;">My Background</h2>
+    <div class="edu-item">
+      <div class="edu-period">2024 — Present</div>
+      <div>
+        <h3>Jhaudia College</h3>
+        <span class="role">Higher Secondary Certificate (HSC) · Humanities Group</span>
+        <p>Kushtia, Bangladesh. Currently studying, building skills in analysis, writing, and critical thinking.</p>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-period">Completed 2024</div>
+      <div>
+        <h3>Jhaudia Bazar Secondary High School</h3>
+        <span class="role">Secondary School Certificate (SSC) · Humanities Group</span>
+        <p>Kushtia, Bangladesh. Completed foundational secondary education.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <p>MD Shofiqul Islam</p>
-        <small>&copy; 2026 All rights reserved.</small>
-    </footer>
+<section id="skills">
+  <div class="container">
+    <div class="eyebrow mono">MY STACK</div>
+    <h2 style="font-size:2rem;font-weight:700;margin-bottom:30px;">Skills</h2>
+    <div class="stack-grid">
+      <div class="stack-card"><i class="fas fa-comments"></i><span>Communication</span></div>
+      <div class="stack-card"><i class="fas fa-clock"></i><span>Time Management</span></div>
+      <div class="stack-card"><i class="fas fa-laptop"></i><span>Computer Literacy</span></div>
+      <div class="stack-card"><i class="fas fa-language"></i><span>Bengali (Native)</span></div>
+      <div class="stack-card"><i class="fas fa-globe"></i><span>English (Working)</span></div>
+      <div class="stack-card"><i class="fas fa-book"></i><span>Arabic (Reading)</span></div>
+      <div class="stack-card"><i class="fas fa-users"></i><span>Teamwork</span></div>
+    </div>
+  </div>
+</section>
 
-    <script src="https://shofiqul3.github.io/file_system/main_profile/js_file/script.js"></script>
+<section id="contact" style="border-bottom:none;">
+  <div class="container contact-inner">
+    <div class="eyebrow mono">GET IN TOUCH</div>
+    <h2>You know how <span>to find me.</span></h2>
+    <div class="contact-links">
+      <a href="mailto:shofiqulislamabid@gmail.com?subject=Hello%20Shofiqul"><i class="fas fa-envelope"></i> Email</a>
+      <a href="https://m.me/md.shofiqul.islam.abid" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-messenger"></i> Messenger</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  built by <span class="accent">Abid</span> · &copy; 2026
+</footer>
+
+<script>
+  // Intro preloader: letters flip in, underline draws, then everything slides up and out
+  const preloader = document.getElementById('preloader');
+  const preloaderName = document.getElementById('preloaderName');
+  document.body.classList.add('loading');
+
+  setTimeout(() => {
+    preloader.classList.add('exiting');
+    preloaderName.classList.add('exit');
+  }, 1300);
+  setTimeout(() => preloader.classList.add('hide'), 1750);
+  setTimeout(() => {
+    preloader.remove();
+    document.body.classList.remove('loading');
+  }, 2400);
+
+  // Mobile 3-dot menu
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+
+  function closeMenu(){
+    mobileMenu.classList.remove('active');
+    mobileOverlay.classList.remove('active');
+    menuBtn.classList.remove('active');
+  }
+
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('active');
+    mobileOverlay.classList.toggle('active');
+    menuBtn.classList.toggle('active');
+  });
+  mobileOverlay.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Top-right cluster (avatar + nav pill): hide on scroll down, show on scroll up
+  const topRightCluster = document.getElementById('topRightCluster');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    if (current > lastScroll && current > 80) {
+      topRightCluster.classList.add('nav-hidden');
+      closeMenu();
+    } else {
+      topRightCluster.classList.remove('nav-hidden');
+    }
+    lastScroll = current;
+  });
+</script>
+
 </body>
 </html>

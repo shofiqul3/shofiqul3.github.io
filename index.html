@@ -129,6 +129,7 @@
   .mobile-menu.active li:nth-child(3){transition-delay:.20s;}
   .mobile-menu.active li:nth-child(4){transition-delay:.26s;}
   .mobile-menu.active li:nth-child(5){transition-delay:.32s;}
+  .mobile-menu.active li:nth-child(6){transition-delay:.38s;}
   .mobile-menu a{
     text-decoration:none;color:var(--text);font-family:'JetBrains Mono',monospace;
     font-size:0.95rem;display:flex;align-items:center;gap:10px;
@@ -222,6 +223,81 @@
   .stack-card i{color:var(--accent);font-size:1.3rem;margin-bottom:12px;display:block;}
   .stack-card span{font-family:'JetBrains Mono',monospace;font-size:0.85rem;}
 
+  /* Village Gallery */
+  .gallery-sub{color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:34px;}
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:16px;
+  }
+  .gallery-item{
+    position:relative;border-radius:6px;overflow:hidden;
+    border:1px solid var(--line);
+    aspect-ratio:4/3;cursor:pointer;
+    background:var(--bg-alt);
+  }
+  .gallery-item img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .5s cubic-bezier(.22,1,.36,1), filter .4s ease;
+    filter:grayscale(15%);
+  }
+  .gallery-item:hover img{transform:scale(1.08);filter:grayscale(0%);}
+  .gallery-item::after{
+    content:"";position:absolute;inset:0;
+    border:1px solid transparent;border-radius:6px;
+    transition:border-color .3s ease;
+    pointer-events:none;
+  }
+  .gallery-item:hover::after{border-color:var(--accent);}
+  .gallery-item .zoom-icon{
+    position:absolute;top:10px;right:10px;
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(11,13,12,0.7);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);font-size:0.8rem;
+    opacity:0;transform:translateY(-6px);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .gallery-item:hover .zoom-icon{opacity:1;transform:translateY(0);}
+
+  /* Lightbox */
+  .lightbox{
+    position:fixed;inset:0;z-index:500;
+    background:rgba(6,7,6,0.94);
+    display:none;align-items:center;justify-content:center;
+    padding:40px;opacity:0;transition:opacity .3s ease;
+  }
+  .lightbox.active{display:flex;opacity:1;}
+  .lightbox img{
+    max-width:90vw;max-height:82vh;border-radius:6px;
+    border:1px solid var(--line);
+    transform:scale(0.96);transition:transform .3s cubic-bezier(.22,1,.36,1);
+  }
+  .lightbox.active img{transform:scale(1);}
+  .lightbox-close{
+    position:absolute;top:24px;right:28px;
+    width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--line);background:var(--bg-alt);
+    color:var(--text);font-size:1.1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .2s, color .2s;
+  }
+  .lightbox-close:hover{border-color:var(--accent);color:var(--accent);}
+  .lightbox-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:46px;height:46px;border-radius:50%;
+    border:1px solid var(--line);background:var(--bg-alt);
+    color:var(--text);font-size:1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .2s, color .2s;
+  }
+  .lightbox-nav:hover{border-color:var(--accent);color:var(--accent);}
+  .lightbox-prev{left:24px;}
+  .lightbox-next{right:24px;}
+  .lightbox-counter{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--muted);
+  }
+
   /* Contact */
   .contact-inner{text-align:left;}
   .contact-inner h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;margin-bottom:20px;line-height:1.15;}
@@ -241,6 +317,9 @@
   @media (max-width:480px){
     .contact-links{flex-direction:column;}
     .contact-links a{width:100%;}
+    .lightbox-nav{width:38px;height:38px;}
+    .lightbox-prev{left:8px;}
+    .lightbox-next{right:8px;}
   }
 
   footer{
@@ -281,6 +360,7 @@
   <li><a href="#about"><i class="fas fa-user"></i> About Me</a></li>
   <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
   <li><a href="#skills"><i class="fas fa-layer-group"></i> Skills</a></li>
+  <li><a href="#village"><i class="fas fa-tree"></i> My Village</a></li>
   <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
 </ul>
 
@@ -358,6 +438,24 @@
   </div>
 </section>
 
+<section id="village">
+  <div class="container">
+    <div class="eyebrow mono">MY VILLAGE</div>
+    <h2 style="font-size:2rem;font-weight:700;margin-bottom:14px;">Jhaudia, Kushtia</h2>
+    <p class="gallery-sub">A few glimpses of home — the fields, the roads, the everyday moments of my village. Click any photo to view it larger.</p>
+    <p class="gallery-sub mono" id="galleryStatus" style="font-size:0.8rem;">Loading photos…</p>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close"><i class="fas fa-xmark"></i></button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+  <img src="" alt="" id="lightboxImg">
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
 <section id="contact" style="border-bottom:none;">
   <div class="container contact-inner">
     <div class="eyebrow mono">GET IN TOUCH</div>
@@ -421,6 +519,108 @@
     }
     lastScroll = current;
   });
+
+  // Village gallery: auto-discover every picture-NN.ext file inside village-picture/
+  const VILLAGE_FOLDER = 'village-picture';
+  const VILLAGE_EXTENSIONS = ['jpg','jpeg','png','webp','JPG','JPEG','PNG','WEBP'];
+  const VILLAGE_MAX_CHECK = 300;      // stop scanning after this many numbers no matter what
+  const VILLAGE_MAX_GAP = 3;          // allow a few skipped numbers (e.g. picture-01, picture-03) before giving up
+
+  function checkImageExists(url){
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  }
+
+  async function findVillagePictures(){
+    const found = [];
+    let gap = 0;
+    for (let i = 1; i <= VILLAGE_MAX_CHECK && gap <= VILLAGE_MAX_GAP; i++){
+      const num = String(i).padStart(2,'0');
+      let hit = null;
+      for (const ext of VILLAGE_EXTENSIONS){
+        const url = `${VILLAGE_FOLDER}/picture-${num}.${ext}`;
+        // eslint-disable-next-line no-await-in-loop
+        if (await checkImageExists(url)){ hit = url; break; }
+      }
+      if (hit){
+        found.push(hit);
+        gap = 0;
+      } else {
+        gap++;
+      }
+    }
+    return found;
+  }
+
+  const galleryGrid = document.getElementById('galleryGrid');
+  const galleryStatus = document.getElementById('galleryStatus');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  let galleryImgs = [];
+  let currentIndex = 0;
+
+  function openLightbox(index){
+    currentIndex = index;
+    updateLightbox();
+    lightbox.classList.add('active');
+  }
+  function updateLightbox(){
+    lightboxImg.src = galleryImgs[currentIndex];
+    lightboxImg.alt = 'Village photo ' + (currentIndex + 1);
+    lightboxCounter.textContent = (currentIndex + 1) + ' / ' + galleryImgs.length;
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('active');
+  }
+  function showPrev(){
+    currentIndex = (currentIndex - 1 + galleryImgs.length) % galleryImgs.length;
+    updateLightbox();
+  }
+  function showNext(){
+    currentIndex = (currentIndex + 1) % galleryImgs.length;
+    updateLightbox();
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', showPrev);
+  lightboxNext.addEventListener('click', showNext);
+  lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if(!lightbox.classList.contains('active')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') showPrev();
+    if(e.key === 'ArrowRight') showNext();
+  });
+
+  (async function initVillageGallery(){
+    const urls = await findVillagePictures();
+    galleryImgs = urls;
+
+    if (urls.length === 0){
+      galleryStatus.textContent = 'No photos found yet — add picture-01.jpg, picture-02.jpg... to the village-picture folder.';
+      return;
+    }
+
+    galleryStatus.remove();
+    galleryGrid.innerHTML = urls.map((url, i) => `
+      <div class="gallery-item" data-index="${i}">
+        <img src="${url}" alt="My village photo ${i + 1}" loading="lazy">
+        <span class="zoom-icon"><i class="fas fa-expand"></i></span>
+      </div>
+    `).join('');
+
+    galleryGrid.querySelectorAll('.gallery-item').forEach((item) => {
+      item.addEventListener('click', () => openLightbox(Number(item.dataset.index)));
+    });
+  })();
 </script>
 
 </body>

@@ -173,24 +173,45 @@
   .btn-line:hover{border-color:var(--accent);color:var(--accent);}
 
   .hero-avatar-wrap{display:flex;justify-content:center;align-items:center;}
-  .avatar-photo-large{
-    width:min(280px,80%);aspect-ratio:1/1;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%, rgba(185,255,59,0.25), transparent 60%), var(--bg-alt);
-    border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;
+  .avatar-frame{
     position:relative;
-    overflow:hidden;
+    width:min(280px,80%);
   }
-  .avatar-photo-large::before{
-    content:"";position:absolute;inset:-1px;border-radius:50%;
-    border:1px dashed var(--line);
-    z-index:1;
-    pointer-events:none;
+  .avatar-photo-large{
+    width:100%;aspect-ratio:1/1;border-radius:14px;
+    background:radial-gradient(circle at 30% 30%, rgba(185,255,59,0.20), transparent 60%), var(--bg-alt);
+    border:1px solid var(--line);
+    overflow:hidden;
+    position:relative;
   }
   .avatar-photo-large img{
     width:100%;height:100%;object-fit:cover;
-    border-radius:50%;
+    filter:grayscale(70%) contrast(1.05) brightness(0.96);
+    transition:filter .6s ease, transform .7s cubic-bezier(.22,1,.36,1);
   }
+  .avatar-frame:hover .avatar-photo-large img{
+    filter:grayscale(0%) contrast(1) brightness(1);
+    transform:scale(1.05);
+  }
+  .avatar-corner{
+    position:absolute;width:20px;height:20px;
+    border:2px solid var(--accent);
+    transition:width .35s cubic-bezier(.22,1,.36,1), height .35s cubic-bezier(.22,1,.36,1), inset .35s ease;
+  }
+  .avatar-corner-tl{top:-9px;left:-9px;border-right:none;border-bottom:none;border-top-left-radius:4px;}
+  .avatar-corner-tr{top:-9px;right:-9px;border-left:none;border-bottom:none;border-top-right-radius:4px;}
+  .avatar-corner-bl{bottom:-9px;left:-9px;border-right:none;border-top:none;border-bottom-left-radius:4px;}
+  .avatar-corner-br{bottom:-9px;right:-9px;border-left:none;border-top:none;border-bottom-right-radius:4px;}
+  .avatar-frame:hover .avatar-corner{width:28px;height:28px;}
+  .avatar-tag{
+    position:absolute;bottom:10px;left:10px;z-index:2;
+    background:rgba(11,13,12,0.75);backdrop-filter:blur(4px);
+    color:var(--accent);font-size:0.68rem;letter-spacing:0.06em;
+    padding:4px 9px;border-radius:3px;border:1px solid var(--line);
+    opacity:0;transform:translateY(4px);
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .avatar-frame:hover .avatar-tag{opacity:1;transform:translateY(0);}
 
   /* About */
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
@@ -333,7 +354,7 @@
     .edu-item{grid-template-columns:1fr;gap:8px;}
     .hero-grid{grid-template-columns:1fr;gap:30px;}
     .hero-avatar-wrap{order:-1;}
-    .avatar-photo-large{width:150px;}
+    .avatar-frame{width:150px;}
   }
 </style>
 </head>
@@ -377,8 +398,15 @@
         </div>
       </div>
       <div class="hero-avatar-wrap">
-        <div class="avatar-photo-large">
-          <img src="images/profile.jpg" alt="Shofiqul Islam profile picture">
+        <div class="avatar-frame">
+          <span class="avatar-corner avatar-corner-tl"></span>
+          <span class="avatar-corner avatar-corner-tr"></span>
+          <span class="avatar-corner avatar-corner-bl"></span>
+          <span class="avatar-corner avatar-corner-br"></span>
+          <div class="avatar-photo-large">
+            <img src="images/profile.jpg" alt="Shofiqul Islam profile picture">
+          </div>
+          <span class="avatar-tag mono">IMG_ABID.JPG</span>
         </div>
       </div>
     </div>
@@ -461,7 +489,7 @@
     <div class="eyebrow mono">GET IN TOUCH</div>
     <h2>You know how <span>to find me.</span></h2>
     <div class="contact-links">
-      <a href="mailto:shofiqulislamabid@gmail.com?subject=Hello%20Shofiqul"><i class="fas fa-envelope"></i> Email</a>
+      <a href="mailto:shofiqulislamabid@gmail.com?subject=Start%20user%20text&body=I%20am%20%5Byour%20name%5D%0A%0A"><i class="fas fa-envelope"></i> Email</a>
       <a href="https://m.me/61591489238233" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-messenger"></i> Messenger</a>
     </div>
   </div>

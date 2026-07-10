@@ -40,7 +40,6 @@
     position:fixed;top:0;left:36px;bottom:0;width:2px;
     background:var(--rule);opacity:0.65;z-index:5;pointer-events:none;
   }
-  .margin-rule::before,.margin-rule::after{content:"";}
   .punch{
     position:fixed;left:22px;width:9px;height:9px;border-radius:50%;
     background:var(--paper);border:1.5px solid var(--line-strong);z-index:6;
@@ -140,7 +139,7 @@
   }
   .mobile-menu.active .mobile-menu-profile{opacity:1;transform:translateX(0);transition-delay:.02s;}
   .mobile-menu-avatar{
-    width:46px;height:46px;border-radius:12px;overflow:hidden;flex:0 0 auto;
+    width:46px;height:46px;border-radius:50%;overflow:hidden;flex:0 0 auto;
     border:2px solid var(--rule);box-shadow:0 3px 6px rgba(36,31,27,0.2);
   }
   .mobile-menu-avatar img{
@@ -172,7 +171,6 @@
     font-size:0.95rem;display:flex;align-items:center;gap:10px;
     padding-left:16px;
   }
-  /* small dot marker per item that expands into a bar on hover */
   .mobile-menu-list a::before{
     content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
     width:5px;height:5px;border-radius:50%;background:var(--rule);
@@ -242,150 +240,29 @@
   }
   .profile-email-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--code);}
 
-  /* Contact rows — reused inside the contact post's body */
-  .intro-row{
-    display:flex;align-items:center;gap:12px;color:var(--ink-soft);
-    font-size:0.92rem;margin-bottom:12px;line-height:1.5;
-  }
-  .intro-row:last-child{margin-bottom:0;}
-  .intro-row i{width:18px;color:var(--rule);flex:0 0 auto;text-align:center;}
-  .intro-row a{color:var(--code);text-decoration:none;}
-  .intro-row a:hover{text-decoration:underline;}
-
-  /* Feed — each block of text becomes its own post card, share-only (no reactions) */
-  .feed{max-width:640px;margin:0 auto;padding:44px 20px 10px 20px;position:relative;}
-
-  /* Stitched thread running down the center of the feed, linking every
-     post like they're sewn together in a scrapbook. */
-  .feed::before{
-    content:"";position:absolute;top:26px;bottom:26px;left:50%;
-    width:0;border-left:2px dashed var(--line-strong);
-    transform:translateX(-50%);z-index:0;
-  }
-  .feed-group{margin-bottom:6px;position:relative;z-index:1;}
-  .post{
-    position:relative;overflow:visible;
-    background:var(--bg,#fffdf8);border:1px solid var(--line-strong);border-radius:10px;
-    padding:22px;margin-bottom:38px;box-shadow:0 4px 14px rgba(36,31,27,0.08);
-    transition:transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease;
-    --accent: linear-gradient(90deg, var(--rule), var(--code));
-    --tilt: -0.6deg;
-  }
-  .post:nth-child(even){--tilt:0.6deg;}
-  .post{transform:rotate(var(--tilt));}
-  .post:hover{transform:rotate(0deg) translateY(-3px);box-shadow:0 10px 24px rgba(36,31,27,0.16);}
-
-  /* Grommets: little eyelets top/bottom-center of each card where the
-     "thread" appears to pass through. */
-  .post::after{
-    content:"";position:absolute;left:50%;bottom:-38px;transform:translateX(-50%);
-    width:11px;height:11px;border-radius:50%;
-    background:var(--paper);border:2px solid var(--line-strong);z-index:2;
-  }
-  .feed-group:last-child .post:last-child::after{display:none;}
-  .post::before{
-    content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0;
-    background:var(--accent);
+  /* About */
+  .about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:60px;align-items:start;}
+  .about-grid h2{font-family:'Fraunces',serif;font-weight:600;font-size:2.1rem;margin-bottom:0;line-height:1.15;}
+  .about-grid p{color:var(--ink-soft);margin-bottom:16px;line-height:1.8;font-size:1.02rem;}
+  .about-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:0.82rem;
+    color:var(--code);border:1px dashed var(--line-strong);
+    display:inline-block;padding:9px 14px;border-radius:3px;margin-top:6px;
   }
 
-  /* Washi-tape corner accent — alternates side/rotation per post so no two
-     cards look quite the same. */
-  .post .post-tape{
-    position:absolute;top:-12px;width:52px;height:22px;
-    background:var(--accent);opacity:0.55;
-    box-shadow:0 2px 4px rgba(36,31,27,0.18);
-    z-index:3;
+  /* Education — ruled ledger */
+  .edu-item{
+    display:grid;grid-template-columns:150px 1fr;gap:30px;
+    padding:30px 0;border-top:1px dashed var(--line-strong);
   }
-  .post:nth-child(3n){ }
-  .post .post-tape.tape-left{left:18px;transform:rotate(-8deg);}
-  .post .post-tape.tape-right{right:18px;transform:rotate(8deg);}
-  .post-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-  .post-avatar{width:40px;height:40px;border-radius:11px;overflow:hidden;flex:0 0 auto;border:2px solid var(--accent, var(--rule));box-shadow:0 2px 5px rgba(36,31,27,0.18);}
-  .post-avatar img{width:100%;height:100%;object-fit:cover;filter:sepia(8%);}
-  .post-name{font-family:'Fraunces',serif;font-weight:600;font-size:0.95rem;color:var(--ink);display:block;}
-  .post-sub{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ink-soft);}
-  .post-body{color:var(--ink);line-height:1.75;font-size:0.98rem;}
-  .post-body p{margin-bottom:10px;}
-  .post-body p:last-child{margin-bottom:0;}
-  .post-body h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;margin-bottom:4px;}
-  .post-body .role{color:var(--code);font-family:'IBM Plex Mono',monospace;font-size:0.78rem;display:block;margin-bottom:8px;}
-  .post-footer{
-    margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
-    display:flex;justify-content:flex-end;
-  }
-  .post-share{
-    display:inline-flex;align-items:center;gap:8px;
-    background:none;border:1px solid var(--line-strong);border-radius:6px;
-    font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--ink-soft);
-    padding:8px 14px;cursor:pointer;
-    transition:background .2s ease,color .2s ease,border-color .2s ease,transform .15s ease;
-  }
-  .post-share:hover{background:var(--paper-alt);color:var(--rule);border-color:var(--rule);transform:translateY(-1px);}
-  .post-share:active{transform:translateY(0);}
-  .post-share.copied{color:var(--code);border-color:var(--code);}
-
-  /* Share sheet — bottom-sheet modal (YouTube-style) opened by the Share button */
-  .share-sheet{
-    position:fixed;inset:0;z-index:700;
-    background:rgba(20,17,14,0.5);
-    display:none;align-items:flex-end;justify-content:center;
-    opacity:0;transition:opacity .25s ease;
-  }
-  .share-sheet.active{display:flex;opacity:1;}
-  .share-sheet-panel{
-    width:100%;max-width:520px;background:var(--paper);
-    border:1.5px solid var(--ink);border-bottom:none;
-    border-radius:18px 18px 0 0;padding:14px 22px 26px 22px;
-    box-shadow:0 -8px 24px rgba(36,31,27,0.3);
-    transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);
-  }
-  .share-sheet.active .share-sheet-panel{transform:translateY(0);}
-  .share-sheet-handle{
-    width:40px;height:5px;border-radius:3px;background:var(--line-strong);
-    margin:0 auto 14px auto;
-  }
-  .share-sheet-title{
-    font-family:'Fraunces',serif;font-weight:600;font-size:1rem;
-    margin-bottom:18px;text-align:center;
-  }
-  .share-options{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px;
-    margin-bottom:20px;
-  }
-  .share-option{
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    background:none;border:none;cursor:pointer;
-    font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--ink);
-  }
-  .share-icon{
-    width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;
-    font-size:1.2rem;color:#fff;transition:transform .15s ease;
-  }
-  .share-option:hover .share-icon{transform:translateY(-2px);}
-  .share-icon.fb{background:#3b5998;}
-  .share-icon.msgr{background:#0084ff;}
-  .share-icon.wa{background:#25d366;}
-  .share-icon.x{background:#000;}
-  .share-icon.mail{background:var(--code);}
-  .share-icon.copy{background:var(--ink-soft);}
-  .share-sheet-cancel{
-    width:100%;padding:12px;border-radius:8px;border:1.5px solid var(--ink);
-    background:transparent;font-family:'IBM Plex Mono',monospace;font-size:0.88rem;
-    cursor:pointer;transition:background .2s ease;
-  }
-  .share-sheet-cancel:hover{background:var(--paper-alt);}
-
-  /* Toast — small confirmation when a share link is copied */
-  .toast{
-    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:var(--ink);color:var(--paper);font-family:'IBM Plex Mono',monospace;font-size:0.82rem;
-    padding:10px 18px;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,0.3);
-    opacity:0;pointer-events:none;transition:opacity .3s ease, transform .3s ease;z-index:600;
-  }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .edu-item:last-child{border-bottom:1px dashed var(--line-strong);}
+  .edu-period{font-family:'IBM Plex Mono',monospace;font-size:0.85rem;color:var(--rule);}
+  .edu-item h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.35rem;margin-bottom:6px;}
+  .edu-item .role{color:var(--code);font-family:'IBM Plex Mono',monospace;font-size:0.82rem;margin-bottom:10px;display:block;}
+  .edu-item p{color:var(--ink-soft);line-height:1.7;}
 
   /* Skills — grouped like code tags vs. handwritten tags */
-  .skills-group{margin-bottom:20px;}
+  .skills-group{margin-bottom:44px;}
   .skills-group:last-child{margin-bottom:0;}
   .skills-group-label{
     font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--ink-soft);
@@ -405,28 +282,33 @@
   }
   .tag-soft:hover{transform:translateY(-2px);}
 
-  /* Village post photo */
-  .village-photo-wrap{
-    border-radius:8px;overflow:hidden;margin-top:4px;
-    aspect-ratio:4/3;background:var(--paper-alt);cursor:pointer;
-    position:relative;
+  /* Village Gallery — scrapbook page */
+  .gallery-sub{color:var(--ink-soft);max-width:520px;line-height:1.75;margin-bottom:34px;}
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:28px 20px;
   }
-  .village-photo-wrap img{
+  .gallery-item{
+    position:relative;background:#fffdf8;padding:10px 10px 34px 10px;
+    box-shadow:0 8px 18px rgba(36,31,27,0.18);
+    cursor:pointer;transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .gallery-item:nth-child(odd){transform:rotate(-2deg);}
+  .gallery-item:nth-child(even){transform:rotate(2deg);}
+  .gallery-item:hover{transform:rotate(0deg) translateY(-4px);box-shadow:0 14px 26px rgba(36,31,27,0.26);}
+  .gallery-item .frame{aspect-ratio:4/3;overflow:hidden;background:var(--paper-alt);}
+  .gallery-item img{
     width:100%;height:100%;object-fit:cover;display:block;
-    filter:sepia(8%);transition:transform .5s ease, filter .4s ease;
+    filter:sepia(10%);transition:transform .5s ease, filter .4s ease;
   }
-  .village-photo-wrap:hover img{transform:scale(1.04);filter:sepia(0%);}
-  .village-photo-wrap .zoom-icon{
-    position:absolute;bottom:10px;right:12px;
-    color:#fff;font-size:0.75rem;font-family:'IBM Plex Mono',monospace;
-    background:rgba(36,31,27,0.55);padding:4px 9px;border-radius:4px;
+  .gallery-item:hover img{transform:scale(1.06);filter:sepia(0%);}
+  .gallery-item .zoom-icon{
+    position:absolute;bottom:8px;right:10px;
+    color:var(--ink-soft);font-size:0.75rem;
+    font-family:'IBM Plex Mono',monospace;
     opacity:0;transition:opacity .25s ease;
   }
-  .village-photo-wrap:hover .zoom-icon{opacity:1;}
-  .village-caption{
-    font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--ink-soft);
-    margin-top:10px;
-  }
+  .gallery-item:hover .zoom-icon{opacity:1;}
 
   /* Lightbox */
   .lightbox{
@@ -467,7 +349,28 @@
     font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:#EDE4CE;
   }
 
+  /* Contact */
+  .contact-inner{text-align:left;}
+  .contact-inner h2{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:clamp(2rem,5vw,3.2rem);margin-bottom:20px;line-height:1.12;
+  }
+  .contact-inner h2 em{color:var(--rule);font-style:italic;}
+  .contact-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:28px;}
+  .contact-links a{
+    font-family:'IBM Plex Mono',monospace;font-size:0.9rem;
+    border:1.5px solid var(--ink);border-radius:4px;
+    text-decoration:none;display:flex;align-items:center;justify-content:center;gap:10px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    width:200px;height:52px;
+    flex:0 0 auto;box-sizing:border-box;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .contact-links a:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--rule);}
+
   @media (max-width:480px){
+    .contact-links{flex-direction:column;}
+    .contact-links a{width:100%;}
     .lightbox-nav{width:38px;height:38px;}
     .lightbox-prev{left:8px;}
     .lightbox-next{right:8px;}
@@ -483,6 +386,8 @@
     .container{padding-left:52px;}
     .margin-rule{left:28px;}
     .punch{left:14px;}
+    .about-grid{grid-template-columns:1fr;gap:20px;}
+    .edu-item{grid-template-columns:1fr;gap:8px;}
     .profile-header-body{padding:0 20px 30px 52px;}
     .profile-pic{width:100px;height:100px;margin-top:-48px;}
   }
@@ -555,149 +460,80 @@
   </div>
 </div>
 
-<div class="feed">
-
-  <div id="about" class="feed-group">
-    <article class="post" id="post-about" style="--bg:#F3E7CF;--accent:#C9A87C;">
-      <span class="post-tape tape-left"></span>
-      <div class="post-header">
-        <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-        <div>
-          <span class="post-name">Shofiqul Islam</span>
-          <span class="post-sub">Intro</span>
-        </div>
-      </div>
-      <div class="post-body">
-        <p>I'm Shofiqul, currently pursuing my Higher Secondary Certificate at Jhaudia College in Kushtia, Bangladesh. My focus is the Humanities — language, society, and ideas — but I spend just as much time in a code editor, teaching myself web design and C++.</p>
-        <p>I believe in steady, consistent effort over shortcuts, and in staying grounded while I grow — academically, technically, and personally. Grateful for every lesson learned.</p>
-      </div>
-      <div class="post-footer">
-        <button class="post-share" data-target="post-about"><i class="fas fa-share"></i> Share</button>
-      </div>
-    </article>
+<section id="about">
+  <div class="container about-grid">
+    <div>
+      <span class="margin-note">01 · ABOUT</span>
+      <h2>This is me.</h2>
+    </div>
+    <div>
+      <p>I'm Shofiqul, currently pursuing my Higher Secondary Certificate at Jhaudia College in Kushtia, Bangladesh. My focus is the Humanities — language, society, and ideas — but I spend just as much time in a code editor, teaching myself web design and C++.</p>
+      <p>I believe in steady, consistent effort over shortcuts, and in staying grounded while I grow — academically, technically, and personally.</p>
+      <span class="about-tag">grateful for every lesson learned</span>
+    </div>
   </div>
+</section>
 
-  <div id="education" class="feed-group">
-    <article class="post" id="post-edu-hsc" style="--bg:#E3ECE0;--accent:#8FA98F;">
-      <span class="post-tape tape-right"></span>
-      <div class="post-header">
-        <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-        <div>
-          <span class="post-name">Shofiqul Islam</span>
-          <span class="post-sub">Education update</span>
-        </div>
-      </div>
-      <div class="post-body">
+<section id="education">
+  <div class="container">
+    <span class="margin-note">02 · EDUCATION</span>
+    <h2 class="display" style="font-size:2.1rem;font-weight:600;margin-bottom:8px;">My Background</h2>
+    <div class="edu-item">
+      <div class="edu-period mono">2024 — Present</div>
+      <div>
         <h3>Jhaudia College</h3>
-        <span class="role">Higher Secondary Certificate (HSC) · Humanities Group · 2024 — Present</span>
+        <span class="role">Higher Secondary Certificate (HSC) · Humanities Group</span>
         <p>Kushtia, Bangladesh. Currently studying, building skills in analysis, writing, and critical thinking.</p>
       </div>
-      <div class="post-footer">
-        <button class="post-share" data-target="post-edu-hsc"><i class="fas fa-share"></i> Share</button>
-      </div>
-    </article>
-
-    <article class="post" id="post-edu-ssc" style="--bg:#F0E1E7;--accent:#A98F9E;">
-      <span class="post-tape tape-left"></span>
-      <div class="post-header">
-        <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-        <div>
-          <span class="post-name">Shofiqul Islam</span>
-          <span class="post-sub">Education update</span>
-        </div>
-      </div>
-      <div class="post-body">
+    </div>
+    <div class="edu-item">
+      <div class="edu-period mono">Completed 2024</div>
+      <div>
         <h3>Jhaudia Bazar Secondary High School</h3>
-        <span class="role">Secondary School Certificate (SSC) · Humanities Group · Completed 2024</span>
+        <span class="role">Secondary School Certificate (SSC) · Humanities Group</span>
         <p>Kushtia, Bangladesh. Completed foundational secondary education.</p>
       </div>
-      <div class="post-footer">
-        <button class="post-share" data-target="post-edu-ssc"><i class="fas fa-share"></i> Share</button>
-      </div>
-    </article>
+    </div>
   </div>
+</section>
 
-  <div id="skills" class="feed-group">
-    <article class="post" id="post-skill-tech" style="--bg:#E1EAF0;--accent:#7C9AA9;">
-      <span class="post-tape tape-left"></span>
-      <div class="post-header">
-        <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-        <div>
-          <span class="post-name">Shofiqul Islam</span>
-          <span class="post-sub">Skills</span>
-        </div>
-      </div>
-      <div class="post-body">
-        <div class="skills-group">
-          <div class="skills-group-label">// technical</div>
-          <div class="tag-grid">
-            <span class="tag-code">&lt;Website Design/&gt;</span>
-            <span class="tag-code">C++ Programming</span>
-            <span class="tag-code">Computer Literacy</span>
-          </div>
-        </div>
-      </div>
-      <div class="post-footer">
-        <button class="post-share" data-target="post-skill-tech"><i class="fas fa-share"></i> Share</button>
-      </div>
-    </article>
+<section id="skills">
+  <div class="container">
+    <span class="margin-note">03 · SKILLS</span>
+    <h2 class="display" style="font-size:2.1rem;font-weight:600;margin-bottom:34px;">What I Work With</h2>
 
-    <article class="post" id="post-skill-soft" style="--bg:#F1EAD2;--accent:#B9A97C;">
-      <span class="post-tape tape-right"></span>
-      <div class="post-header">
-        <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-        <div>
-          <span class="post-name">Shofiqul Islam</span>
-          <span class="post-sub">Skills</span>
-        </div>
+    <div class="skills-group">
+      <div class="skills-group-label">// technical</div>
+      <div class="tag-grid">
+        <span class="tag-code">&lt;Website Design/&gt;</span>
+        <span class="tag-code">C++ Programming</span>
+        <span class="tag-code">Computer Literacy</span>
       </div>
-      <div class="post-body">
-        <div class="skills-group">
-          <div class="skills-group-label">— languages &amp; people</div>
-          <div class="tag-grid">
-            <span class="tag-soft">Bengali (Native)</span>
-            <span class="tag-soft">English (Working)</span>
-            <span class="tag-soft">Arabic (Reading)</span>
-            <span class="tag-soft">Communication</span>
-            <span class="tag-soft">Time Management</span>
-            <span class="tag-soft">Teamwork</span>
-          </div>
-        </div>
+    </div>
+
+    <div class="skills-group">
+      <div class="skills-group-label">— languages &amp; people</div>
+      <div class="tag-grid">
+        <span class="tag-soft">Bengali (Native)</span>
+        <span class="tag-soft">English (Working)</span>
+        <span class="tag-soft">Arabic (Reading)</span>
+        <span class="tag-soft">Communication</span>
+        <span class="tag-soft">Time Management</span>
+        <span class="tag-soft">Teamwork</span>
       </div>
-      <div class="post-footer">
-        <button class="post-share" data-target="post-skill-soft"><i class="fas fa-share"></i> Share</button>
-      </div>
-    </article>
+    </div>
   </div>
+</section>
 
-  <div id="village" class="feed-group">
-    <p class="mono" id="galleryStatus" style="font-size:0.8rem;color:var(--ink-soft);padding:0 20px 16px 20px;">Loading photos…</p>
-    <div id="villagePosts"></div>
+<section id="village">
+  <div class="container">
+    <span class="margin-note">04 · MY VILLAGE</span>
+    <h2 class="display" style="font-size:2.1rem;font-weight:600;margin-bottom:14px;">Jhaudia, Kushtia</h2>
+    <p class="gallery-sub">A few glimpses of home — the fields, the roads, the everyday moments of my village. Click any photo to view it larger.</p>
+    <p class="gallery-sub mono" id="galleryStatus" style="font-size:0.8rem;">Loading photos…</p>
+    <div class="gallery-grid" id="galleryGrid"></div>
   </div>
-
-  <div id="contact" class="feed-group">
-    <article class="post" id="post-contact" style="--bg:#DCEEE8;--accent:#7CA997;">
-      <span class="post-tape tape-left"></span>
-      <div class="post-header">
-        <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-        <div>
-          <span class="post-name">Shofiqul Islam</span>
-          <span class="post-sub">Contact info</span>
-        </div>
-      </div>
-      <div class="post-body">
-        <div class="intro-row"><i class="fas fa-graduation-cap"></i> Studies Humanities at Jhaudia College</div>
-        <div class="intro-row"><i class="fas fa-location-dot"></i> Lives in Kushtia, Bangladesh</div>
-        <div class="intro-row"><i class="fas fa-envelope"></i> <a href="mailto:shofiqulislamabid@gmail.com?subject=Start%20user%20text&body=I%20am%20%5Byour%20name%5D%0A%0A">shofiqulislamabid@gmail.com</a></div>
-        <div class="intro-row"><i class="fab fa-facebook-messenger"></i> <a href="https://m.me/61591489238233" target="_blank" rel="noopener noreferrer">Message on Messenger</a></div>
-      </div>
-      <div class="post-footer">
-        <button class="post-share" data-target="post-contact"><i class="fas fa-share"></i> Share</button>
-      </div>
-    </article>
-  </div>
-
-</div>
+</section>
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose" aria-label="Close"><i class="fas fa-xmark"></i></button>
@@ -707,27 +543,20 @@
   <div class="lightbox-counter" id="lightboxCounter"></div>
 </div>
 
-<div class="share-sheet" id="shareSheet">
-  <div class="share-sheet-panel">
-    <div class="share-sheet-handle"></div>
-    <h4 class="share-sheet-title">Share this post</h4>
-    <div class="share-options">
-      <button class="share-option" data-network="facebook"><span class="share-icon fb"><i class="fab fa-facebook-f"></i></span><span>Facebook</span></button>
-      <button class="share-option" data-network="messenger"><span class="share-icon msgr"><i class="fab fa-facebook-messenger"></i></span><span>Messenger</span></button>
-      <button class="share-option" data-network="whatsapp"><span class="share-icon wa"><i class="fab fa-whatsapp"></i></span><span>WhatsApp</span></button>
-      <button class="share-option" data-network="twitter"><span class="share-icon x"><i class="fab fa-x-twitter"></i></span><span>X</span></button>
-      <button class="share-option" data-network="email"><span class="share-icon mail"><i class="fas fa-envelope"></i></span><span>Email</span></button>
-      <button class="share-option" data-network="copy"><span class="share-icon copy"><i class="fas fa-link"></i></span><span>Copy link</span></button>
+<section id="contact" style="border-bottom:none;">
+  <div class="container contact-inner">
+    <span class="margin-note">05 · CONTACT</span>
+    <h2>You know how <em>to find me.</em></h2>
+    <div class="contact-links">
+      <a href="mailto:shofiqulislamabid@gmail.com?subject=Start%20user%20text&body=I%20am%20%5Byour%20name%5D%0A%0A"><i class="fas fa-envelope"></i> Email</a>
+      <a href="https://m.me/61591489238233" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-messenger"></i> Messenger</a>
     </div>
-    <button class="share-sheet-cancel" id="shareSheetCancel">Cancel</button>
   </div>
-</div>
+</section>
 
 <footer>
   <span class="mono">$</span> built by <span class="accent">Abid</span> · &copy; 2026
 </footer>
-
-<div class="toast" id="toast">Link copied to clipboard</div>
 
 <script>
   // Curtain-reveal preloader: letters fade in over the bars, then the bars
@@ -738,7 +567,6 @@
   const curtainCaption = document.getElementById('curtainCaption');
   document.body.classList.add('loading');
 
-  // stagger each bar's exit slightly so the curtain falls left-to-right
   Array.from(curtainBars.children).forEach((bar, i) => {
     bar.style.transitionDelay = (i * 0.06) + 's';
   });
@@ -788,9 +616,6 @@
   });
 
   // Margin punch holes (decorative, spaced down the rule line).
-  // Recomputed after load, after the village posts populate, and on resize —
-  // running it only once at parse time (as before) undercounted holes on
-  // taller/rebuilt pages and left them stale after a resize or rotation.
   let existingPunches = [];
   function addPunches(){
     existingPunches.forEach(p => p.remove());
@@ -814,30 +639,8 @@
     punchResizeTimer = setTimeout(addPunches, 200);
   });
 
-  // Soft, hazy ("japsa") color pairs — cycled per village post so each
-  // card gets its own muted background tint + matching top-stripe accent,
-  // instead of every post looking the same. Kept deliberately light/washed
-  // out per request: no dark colors anywhere.
-  const POST_PALETTE = [
-    { bg:'#F3E7CF', accent:'#C9A87C' }, // sandy ochre
-    { bg:'#E3ECE0', accent:'#8FA98F' }, // sage
-    { bg:'#F0E1E7', accent:'#A98F9E' }, // dusty mauve
-    { bg:'#E1EAF0', accent:'#7C9AA9' }, // muted steel blue
-    { bg:'#F1EAD2', accent:'#B9A97C' }, // hazy gold
-    { bg:'#E9EEE0', accent:'#9EA98F' }, // olive haze
-    { bg:'#F0E3D6', accent:'#A98F7C' }, // clay
-    { bg:'#DCEEE8', accent:'#7CA997' }  // faded teal
-  ];
-
-  // Village gallery: auto-discover pictures inside village-picture/.
-  // Tries a few common naming patterns since we don't know the exact
-  // filenames used on the live site — zero-padded (picture-01.jpg),
-  // unpadded (picture-1.jpg), and plain numbers (1.jpg).
-  const VILLAGE_FOLDER = 'village-picture';
-  const VILLAGE_EXTENSIONS = ['jpg','jpeg','png','webp','JPG','JPEG','PNG','WEBP'];
-  const VILLAGE_MAX_CHECK = 100;
-  const VILLAGE_MAX_GAP = 3;
-
+  // Shared image-existence check, used by both the cover photo and the
+  // village gallery below.
   function checkImageExists(url){
     return new Promise((resolve) => {
       const img = new Image();
@@ -847,31 +650,38 @@
     });
   }
 
-  async function findImage(candidates){
-    for (const url of candidates){
-      // eslint-disable-next-line no-await-in-loop
-      if (await checkImageExists(url)) return url;
-    }
-    return null;
+  // Cover photo: uses cover.jpg at the repo root if it exists, otherwise
+  // keeps the text fallback shown in the profile header.
+  const coverPhoto = document.getElementById('coverPhoto');
+  const coverFallback = document.getElementById('coverFallback');
+  function setCoverPhoto(url){
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Cover photo';
+    coverPhoto.insertBefore(img, coverFallback);
+    coverFallback.remove();
   }
+  (async function initCoverPhoto(){
+    if (await checkImageExists('cover.jpg')) setCoverPhoto('cover.jpg');
+  })();
 
-  function namePatternsFor(i){
-    const padded = String(i).padStart(2,'0');
-    const names = [`picture-${padded}`, `picture-${i}`, `${i}`];
-    const urls = [];
-    for (const name of names){
-      for (const ext of VILLAGE_EXTENSIONS){
-        urls.push(`${VILLAGE_FOLDER}/${name}.${ext}`);
-      }
-    }
-    return urls;
-  }
+  // Village gallery: auto-discover every picture-NN.ext file inside village-picture/
+  const VILLAGE_FOLDER = 'village-picture';
+  const VILLAGE_EXTENSIONS = ['jpg','jpeg','png','webp','JPG','JPEG','PNG','WEBP'];
+  const VILLAGE_MAX_CHECK = 300;
+  const VILLAGE_MAX_GAP = 3;
 
   async function findVillagePictures(){
     const found = [];
     let gap = 0;
     for (let i = 1; i <= VILLAGE_MAX_CHECK && gap <= VILLAGE_MAX_GAP; i++){
-      const hit = await findImage(namePatternsFor(i));
+      const num = String(i).padStart(2,'0');
+      let hit = null;
+      for (const ext of VILLAGE_EXTENSIONS){
+        const url = `${VILLAGE_FOLDER}/picture-${num}.${ext}`;
+        // eslint-disable-next-line no-await-in-loop
+        if (await checkImageExists(url)){ hit = url; break; }
+      }
       if (hit){
         found.push(hit);
         gap = 0;
@@ -882,7 +692,7 @@
     return found;
   }
 
-  const villagePosts = document.getElementById('villagePosts');
+  const galleryGrid = document.getElementById('galleryGrid');
   const galleryStatus = document.getElementById('galleryStatus');
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
@@ -926,167 +736,29 @@
     if(e.key === 'ArrowRight') showNext();
   });
 
-  // Cover photo: fixed to cover.jpg at the repo root, as requested.
-  const coverPhoto = document.getElementById('coverPhoto');
-  const coverFallback = document.getElementById('coverFallback');
-  function setCoverPhoto(url){
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = 'Jhaudia village, Kushtia';
-    coverPhoto.insertBefore(img, coverFallback);
-    coverFallback.remove();
-  }
-
-  (async function initCoverPhoto(){
-    if (await checkImageExists('cover.jpg')) setCoverPhoto('cover.jpg');
-    // If cover.jpg isn't found, initVillageGallery() below will fall back
-    // to the first discovered village photo once it finishes discovering.
-  })();
-
-  // Each photo in village-picture/ becomes its own separate post card,
-  // styled like the rest of the feed, so no manual link-wiring is needed —
-  // add a photo to the folder and it shows up as a new post automatically.
-
-  // Share sheet: clicking Share on any post opens a bottom-sheet modal
-  // (like YouTube's mobile share dialog) with network options, instead
-  // of copying the link straight away.
-  const shareSheet = document.getElementById('shareSheet');
-  const shareSheetCancel = document.getElementById('shareSheetCancel');
-  let activeShareBtn = null;
-  let activeShareUrl = '';
-
-  function openShareSheet(btn){
-    activeShareBtn = btn;
-    activeShareUrl = `${location.origin}${location.pathname}#${btn.dataset.target}`;
-    shareSheet.classList.add('active');
-  }
-  function closeShareSheet(){
-    shareSheet.classList.remove('active');
-    activeShareBtn = null;
-  }
-  shareSheetCancel.addEventListener('click', closeShareSheet);
-  shareSheet.addEventListener('click', (e) => { if(e.target === shareSheet) closeShareSheet(); });
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape' && shareSheet.classList.contains('active')) closeShareSheet();
-  });
-
-  async function copyShareLink(url){
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch (err) {
-      const temp = document.createElement('input');
-      temp.value = url;
-      document.body.appendChild(temp);
-      temp.select();
-      document.execCommand('copy');
-      temp.remove();
-    }
-  }
-
-  document.querySelectorAll('.share-option').forEach((opt) => {
-    opt.addEventListener('click', async () => {
-      const network = opt.dataset.network;
-      const url = activeShareUrl;
-      const encoded = encodeURIComponent(url);
-      switch(network){
-        case 'facebook':
-          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encoded}`, '_blank', 'noopener,noreferrer');
-          break;
-        case 'messenger':
-          window.open(`https://m.me/61591489238233`, '_blank', 'noopener,noreferrer');
-          break;
-        case 'whatsapp':
-          window.open(`https://wa.me/?text=${encoded}`, '_blank', 'noopener,noreferrer');
-          break;
-        case 'twitter':
-          window.open(`https://twitter.com/intent/tweet?url=${encoded}`, '_blank', 'noopener,noreferrer');
-          break;
-        case 'email':
-          window.location.href = `mailto:?subject=${encodeURIComponent('Check this out')}&body=${encoded}`;
-          break;
-        case 'copy':
-          await copyShareLink(url);
-          if (activeShareBtn){
-            activeShareBtn.classList.add('copied');
-            setTimeout(() => activeShareBtn.classList.remove('copied'), 1200);
-          }
-          showToast('Link copied to clipboard');
-          break;
-      }
-      closeShareSheet();
-    });
-  });
-
-  function bindShareButton(btn){
-    btn.addEventListener('click', () => openShareSheet(btn));
-  }
-
   (async function initVillageGallery(){
     const urls = await findVillagePictures();
     galleryImgs = urls;
 
     if (urls.length === 0){
-      galleryStatus.textContent = 'No photos found yet — add pictures (e.g. picture-01.jpg, 1.jpg) to the village-picture folder.';
+      galleryStatus.textContent = 'No photos found yet — add picture-01.jpg, picture-02.jpg... to the village-picture folder.';
       return;
     }
 
-    if (!coverPhoto.querySelector('img')) setCoverPhoto(urls[0]);
-
     galleryStatus.remove();
+    galleryGrid.innerHTML = urls.map((url, i) => `
+      <div class="gallery-item" data-index="${i}">
+        <div class="frame"><img src="${url}" alt="My village photo ${i + 1}" loading="lazy"></div>
+        <span class="zoom-icon"><i class="fas fa-expand"></i> view</span>
+      </div>
+    `).join('');
 
-    const frag = document.createDocumentFragment();
-    urls.forEach((url, i) => {
-      const { bg, accent } = POST_PALETTE[i % POST_PALETTE.length];
-      const article = document.createElement('article');
-      article.className = 'post';
-      article.id = `post-village-${i + 1}`;
-      article.style.setProperty('--bg', bg);
-      article.style.setProperty('--accent', accent);
-      const tapeSide = i % 2 === 0 ? 'tape-left' : 'tape-right';
-      article.innerHTML = `
-        <span class="post-tape ${tapeSide}"></span>
-        <div class="post-header">
-          <span class="post-avatar"><img src="images/profile.jpg" alt="Shofiqul"></span>
-          <div>
-            <span class="post-name">Shofiqul Islam</span>
-            <span class="post-sub">Photo · Jhaudia, Kushtia</span>
-          </div>
-        </div>
-        <div class="post-body">
-          <div class="village-photo-wrap" data-index="${i}">
-            <img src="${url}" alt="My village photo ${i + 1}" loading="lazy">
-            <span class="zoom-icon"><i class="fas fa-expand"></i> view</span>
-          </div>
-          <div class="village-caption">A glimpse of home — Jhaudia, Kushtia. (${i + 1} of ${urls.length})</div>
-        </div>
-        <div class="post-footer">
-          <button class="post-share" data-target="post-village-${i + 1}"><i class="fas fa-share"></i> Share</button>
-        </div>
-      `;
-      frag.appendChild(article);
+    galleryGrid.querySelectorAll('.gallery-item').forEach((item) => {
+      item.addEventListener('click', () => openLightbox(Number(item.dataset.index)));
     });
-    villagePosts.appendChild(frag);
-
-    villagePosts.querySelectorAll('.village-photo-wrap').forEach((wrap) => {
-      wrap.addEventListener('click', () => openLightbox(Number(wrap.dataset.index)));
-    });
-    villagePosts.querySelectorAll('.post-share').forEach(bindShareButton);
 
     addPunches();
   })();
-
-  // Posts have a Share action only (no reactions). Sharing copies a
-  // deep link straight to that post instead of opening a share sheet.
-  const toast = document.getElementById('toast');
-  let toastTimer;
-  function showToast(message){
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-  }
-
-  document.querySelectorAll('.post-share').forEach(bindShareButton);
 </script>
 
 </body>

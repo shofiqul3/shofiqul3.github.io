@@ -60,7 +60,11 @@
     position:absolute;inset:0;display:flex;z-index:1;
   }
   .curtain-bars .bar{
-    flex:1;height:100%;background:var(--ink);
+    /* Fixed dark colors on purpose (not tied to --ink): the preloader must
+       always stay dark with light "ABID" letters, in both light and dark
+       mode. If this used var(--ink), the bars would turn light-cream in
+       dark mode and blend into the letters, which were also light-cream. */
+    flex:1;height:100%;background:#241F1B;
     transform:translateY(0);
     transition:transform .85s cubic-bezier(.65,0,.35,1);
   }
